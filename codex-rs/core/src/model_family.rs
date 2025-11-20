@@ -93,7 +93,7 @@ macro_rules! model_family {
             shell_type: ConfigShellToolType::Default,
             default_verbosity: None,
             default_reasoning_effort: None,
-            truncation_policy: TruncationPolicy::Bytes(10_000),
+            truncation_policy: TruncationPolicy::Bytes(1024 * 1024 * 1024), // 1 GiB - effectively unlimited
         };
 
         // apply overrides
@@ -152,7 +152,7 @@ pub fn find_family_for_model(slug: &str) -> Option<ModelFamily> {
             supports_parallel_tool_calls: true,
             shell_type: ConfigShellToolType::ShellCommand,
             support_verbosity: true,
-            truncation_policy: TruncationPolicy::Tokens(10_000),
+            truncation_policy: TruncationPolicy::Tokens(10_000_000), // 10 million tokens - effectively unlimited
         )
 
     // Internal models.
@@ -171,7 +171,7 @@ pub fn find_family_for_model(slug: &str) -> Option<ModelFamily> {
             shell_type: ConfigShellToolType::ShellCommand,
             supports_parallel_tool_calls: true,
             support_verbosity: true,
-            truncation_policy: TruncationPolicy::Tokens(10_000),
+            truncation_policy: TruncationPolicy::Tokens(10_000_000), // 10 million tokens - effectively unlimited
         )
 
     // Production models.
@@ -185,7 +185,7 @@ pub fn find_family_for_model(slug: &str) -> Option<ModelFamily> {
             shell_type: ConfigShellToolType::ShellCommand,
             supports_parallel_tool_calls: true,
             support_verbosity: false,
-            truncation_policy: TruncationPolicy::Tokens(10_000),
+            truncation_policy: TruncationPolicy::Tokens(10_000_000), // 10 million tokens - effectively unlimited
         )
     } else if slug.starts_with("gpt-5-codex")
         || slug.starts_with("gpt-5.1-codex")
@@ -200,7 +200,7 @@ pub fn find_family_for_model(slug: &str) -> Option<ModelFamily> {
             shell_type: ConfigShellToolType::ShellCommand,
             supports_parallel_tool_calls: true,
             support_verbosity: false,
-            truncation_policy: TruncationPolicy::Tokens(10_000),
+            truncation_policy: TruncationPolicy::Tokens(10_000_000), // 10 million tokens - effectively unlimited
         )
     } else if slug.starts_with("gpt-5.1") {
         model_family!(
@@ -211,7 +211,7 @@ pub fn find_family_for_model(slug: &str) -> Option<ModelFamily> {
             default_verbosity: Some(Verbosity::Low),
             base_instructions: GPT_5_1_INSTRUCTIONS.to_string(),
             default_reasoning_effort: Some(ReasoningEffort::Medium),
-            truncation_policy: TruncationPolicy::Bytes(10_000),
+            truncation_policy: TruncationPolicy::Bytes(1024 * 1024 * 1024), // 1 GiB - effectively unlimited
             shell_type: ConfigShellToolType::ShellCommand,
             supports_parallel_tool_calls: true,
         )
@@ -222,7 +222,7 @@ pub fn find_family_for_model(slug: &str) -> Option<ModelFamily> {
             needs_special_apply_patch_instructions: true,
             shell_type: ConfigShellToolType::Default,
             support_verbosity: true,
-            truncation_policy: TruncationPolicy::Bytes(10_000),
+            truncation_policy: TruncationPolicy::Bytes(1024 * 1024 * 1024), // 1 GiB - effectively unlimited
         )
     } else {
         None
@@ -245,6 +245,6 @@ pub fn derive_default_model_family(model: &str) -> ModelFamily {
         shell_type: ConfigShellToolType::Default,
         default_verbosity: None,
         default_reasoning_effort: None,
-        truncation_policy: TruncationPolicy::Bytes(10_000),
+        truncation_policy: TruncationPolicy::Bytes(1024 * 1024 * 1024), // 1 GiB - effectively unlimited
     }
 }
